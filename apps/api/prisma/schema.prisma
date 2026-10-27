@@ -1,0 +1,203 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  CUSTOMER
+  TECHNICIAN
+  WORKSHOP_OWNER
+  ENTERPRISE_MANAGER
+  PLATFORM_ADMIN
+}
+
+enum OrderStatus {
+  Draft
+  Diagnosed
+  OrderConfirmed
+  LabelGenerated
+  InTransitToHub
+  ReceivedAtWorkshop
+  InspectionConfirmed
+  PriceAdjustmentNeeded
+  RepairInProgress
+  QualityControl
+  ReturnInTransit
+  Delivered
+  FundsReleased
+  Disputed
+  UnderInvestigation
+  Cancelled
+  CancelledAndReturned
+  Closed
+}
+
+enum EscrowStatus {
+  PENDING
+  HELD
+  RELEASED
+  REFUNDED
+}
+
+enum ShipmentStatus {
+  CREATED
+  LABEL_GENERATED
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+  CANCELLED
+}
+
+enum InvoiceType {
+  VAT_STANDARD
+  VAT_MARGIN
+  PROFORMA
+}
+
+model User {
+  id        String    @id @default(uuid())
+  phone     String    @unique
+  email     String?   @unique
+  name      String?
+  role      UserRole  @default(CUSTOMER)
+  lang      String    @default("pl")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  devices   Device[]
+  orders    Order[]
+
+  @@map("users")
+}
+
+model Device {
+  id           String    @id @default(uuid())
+  userId       String
+  category     String
+  brand        String
+  model        String
+  serialNumber String?
+  imei         String?
+  condition    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders       Order[]
+
+  @@map("devices")
+}
+
+model Workshop {
+  id              String    @id @default(uuid())
+  name            String
+  area            String
+  spec            String
+  rating          Float     @default(5.0)
+  reviewCount     Int       @default(0)
+  dist            Float     @default(0.0)
+  priceMultiplier Float     @default(1.0)
+  days            Int       @default(2)
+  phone           String?
+  lat             Float?
+  lng             Float?
+  isPromoted      Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  orders          Order[]
+
+  @@map("workshops")
+}
+
+model Order {
+  id              String            @id @default(uuid())
+  orderNumber     String            @unique
+  userId          String
+  workshopId      String?
+  deviceId        String
+  status          OrderStatus       @default(Draft)
+  totalGrosze     Int               @default(0)
+  repairGrosze    Int               @default(0)
+  logisticsGrosze Int               @default(0)
+  paymentMethod   String?
+  escrowStatus    EscrowStatus      @default(PENDING)
+  deliveryMethod  String?
+  returnMethod    String?
+  inpostCode      String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  user            User              @relation(fields: [userId], references: [id])
+  workshop        Workshop?         @relation(fields: [workshopId], references: [id])
+  device          Device            @relation(fields: [deviceId], references: [id])
+  events          OrderStatusEvent[]
+  diagnosticReport DiagnosticReport?
+  shipments       Shipment[]
+  invoices        Invoice[]
+
+  @@map("orders")
+}
+
+model OrderStatusEvent {
+  id         String       @id @default(uuid())
+  orderId    String
+  fromStatus OrderStatus?
+  toStatus   OrderStatus
+  actor      String
+  createdAt  DateTime     @default(now())
+  metadata   Json?
+
+  order      Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_status_events")
+}
+
+model DiagnosticReport {
+  id                      String   @id @default(uuid())
+  orderId                 String   @unique
+  symptoms                Json
+  severity                String
+  suspectedFailure        String
+  estimatedPriceMinGrosze Int
+  estimatedPriceMaxGrosze Int
+  confidence              Float
+  notes                   String?
+  createdAt               DateTime @default(now())
+
+  order                   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("diagnostic_reports")
+}
+
+model Shipment {
+  id             String         @id @default(uuid())
+  orderId        String
+  trackingNumber String
+  status         ShipmentStatus @default(CREATED)
+  method         String
+  labelUrl       String?
+  createdAt      DateTime       @default(now())
+
+  order          Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("shipments")
+}
+
+model Invoice {
+  id            String      @id @default(uuid())
+  orderId       String
+  invoiceNumber String      @unique
+  amountGrosze  Int
+  vatGrosze     Int
+  type          InvoiceType @default(VAT_STANDARD)
+  createdAt     DateTime    @default(now())
+
+  order         Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("invoices")
+}

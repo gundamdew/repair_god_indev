@@ -1,0 +1,29 @@
+{
+  "name": "repair-god",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Repair God — electronic device repair platform & aggregator",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=@repair-god/api",
+    "dev:web": "turbo run dev --filter=@repair-god/web-customer",
+    "dev:workshop": "turbo run dev --filter=@repair-god/web-workshop",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "db:generate": "turbo run db:generate --filter=@repair-god/api",
+    "db:push": "turbo run db:push --filter=@repair-god/api",
+    "db:seed": "turbo run db:seed --filter=@repair-god/api",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  }
+}

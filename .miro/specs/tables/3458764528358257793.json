@@ -1,0 +1,45 @@
+{
+  "id": "3458764528358257793",
+  "type": "table",
+  "title": "The Idea Napkin - Cyfrowy serwis naprawy i wydłużania żywotności urządzeń",
+  "source_url": "https://miro.com/app/board/uXjVEa_aVhY=/?moveToWidget=3458764528358257793&cot=14",
+  "template": "The Idea Napkin by ORBIT Ventures",
+  "content": {
+    "title": "Cyfrowy serwis naprawy i wydłużania żywotności urządzeń",
+    "elevator_pitch": "Agregator, serwis-pośrednik który organizuje naprawę i serwisowanie urządzeń elektronicznych (łącznie z transportem). Pozbawia klienta kontrolowania, konieczności ręcznego szukania i porównywania ofert na rynku",
+    "target_group": "Każdy (konsumenci indywidualni oraz firmy posiadające flotę urządzeń)",
+    "problems_addressed": [
+      "Duży wybór ofert na rynku w różnych miejscach (rozproszenie rynku)",
+      "Zróżnicowany poziom cenowy usług",
+      "Konieczność indywidualnego ustalenia warunków (indywidualna wycena, niepewność co do ostatecznej ceny)",
+      "Konieczność samodzielnej organizacji transportu i weryfikacji warsztatów"
+    ],
+    "solution": {
+      "what": [
+        "Zbieramy oferty w jednym miejscu (agregator / marketplace)",
+        "Ustalamy wspólne warunki świadczenia usług (standardy SLA, gwarancja)",
+        "Zajmujemy się logistyką (magazyn, współpraca z firmami kurierskimi, łańcuch logistyczny)",
+        "Umowy partnerskie ze sprawdzonymi warsztatami",
+        "Aplikacja mobilna i serwis internetowy"
+      ],
+      "how": [
+        "Naprawa kompleksowa (door-to-door)",
+        "Zarządzanie cyklem życia urządzeń (przedłużanie żywotności sprzętu)",
+        "Diagnostyka z wykorzystaniem AI (wstępna wycena i analiza usterek)",
+        "Inteligentny dobór odpowiedniego serwisu",
+        "Płatne pakiety usług dla firm (B2B)",
+        "Nowy kanał sprzedaży dla warsztatów partnerskich"
+      ],
+      "where_and_when": [
+        "Internet, reklama kontekstowa",
+        "Świadczenie dedykowanych usług dla firm (B2B)",
+        "Współpraca ze sklepami elektronicznymi (trade-in, przedłużona gwarancja)"
+      ]
+    },
+    "benefits_and_monetization": [
+      "Głównie prowizja od zrealizowanych zleceń od warsztatów",
+      "Opłata za kompleksową obsługę i transport od klienta",
+      "Płatne pakiety subskrypcyjne / abonamenty serwisowe dla firm"
+    ]
+  }
+}

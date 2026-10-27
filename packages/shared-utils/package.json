@@ -1,0 +1,57 @@
+{
+  "name": "@repair-god/shared-utils",
+  "version": "0.1.0",
+  "description": "Shared utility functions for Repair God platform",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./currency": {
+      "types": "./dist/currency.d.ts",
+      "import": "./dist/currency.js",
+      "default": "./dist/currency.js"
+    },
+    "./imei": {
+      "types": "./dist/imei.d.ts",
+      "import": "./dist/imei.js",
+      "default": "./dist/imei.js"
+    },
+    "./phone": {
+      "types": "./dist/phone.d.ts",
+      "import": "./dist/phone.js",
+      "default": "./dist/phone.js"
+    },
+    "./date": {
+      "types": "./dist/date.d.ts",
+      "import": "./dist/date.js",
+      "default": "./dist/date.js"
+    },
+    "./order": {
+      "types": "./dist/order.d.ts",
+      "import": "./dist/order.js",
+      "default": "./dist/order.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test dist/**/*.test.js",
+    "clean": "node -e \"const fs=require('fs'); fs.rmSync('dist', {recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@repair-god/tsconfig": "workspace:*",
+    "@types/node": "^22.10.7",
+    "typescript": "^5.7.0"
+  }
+}

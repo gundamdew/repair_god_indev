@@ -1,0 +1,627 @@
+Date: Tue, 27 Oct 2026 18:25:12 +0000 (UTC)
+Message-ID: <660419524.45.1793125512577@bb941ea5d59b>
+Subject: Exported From Confluence
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_44_878824397.1793125512576"
+
+------=_Part_44_878824397.1793125512576
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/exported.html
+
+<html xmlns:o=3D'urn:schemas-microsoft-com:office:office'
+      xmlns:w=3D'urn:schemas-microsoft-com:office:word'
+      xmlns:v=3D'urn:schemas-microsoft-com:vml'
+      xmlns=3D'urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+    <title>Persona</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        table {
+            border: solid 1px;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: solid 1px;
+            padding: 5px;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print medi=
+a */
+/* Full of !important until we improve batching for print CSS */
+
+@media print {
+    #main {
+        padding-bottom: 1em !important; /* The default padding of 6em is to=
+o much for printouts */
+    }
+
+    body {
+        font: var(--ds-font-body-small, Arial, Helvetica, FreeSans, sans-se=
+rif);
+    }
+
+    body, #full-height-container, #main, #page, #content, .has-personal-sid=
+ebar #content {
+        background: var(--ds-surface, #fff) !important;
+        color: var(--ds-text, #000) !important;
+        border: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    a, a:link, a:visited, a:focus, a:hover, a:active {
+        color: var(--ds-text, #000);
+    }
+
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        page-break-after: avoid;
+    }
+
+    pre {
+        font: var(--ds-font-code, Monaco, "Courier New", monospace);
+    }
+
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none !important;
+    }
+
+    /* CONF-28544 cannot print multiple pages in IE */
+    #splitter-content {
+        position: relative !important;
+    }
+
+    .comment .date::before {
+        content: none !important; /* remove middot for print view */
+    }
+
+    h1.pagetitle img {
+        height: auto;
+        width: auto;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    #footer {
+        position: relative !important; /* CONF-17506 Place the footer at en=
+d of the content */
+        margin: 0;
+        padding: 0;
+        background: none;
+        clear: both;
+    }
+
+    #poweredby {
+        border-top: none;
+        background: none;
+    }
+
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic;
+    }
+
+    #poweredby li.noprint {
+        display: none;
+    }
+
+    /* no width controls in print */
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible !important;
+    }
+
+    /* TODO - should this work? */
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid;
+    }
+
+    #page-children a {
+        text-decoration: none;
+    }
+
+    /**
+     hide twixies
+
+     the specificity here is a hack because print styles
+     are getting loaded before the base styles. */
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .children-show-hide.icon {
+        display: none;
+    }
+
+    /* personal sidebar */
+    .has-personal-sidebar #content {
+        margin-right: 0px;
+    }
+
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>Persona</h1>
+    <div class=3D"Section1">
+        <div class=3D"contentLayout2">
+<div class=3D"columnLayout fixed-width" data-layout=3D"fixed-width">
+<div class=3D"cell normal" data-type=3D"normal">
+<div class=3D"innerCell">
+<p local-id=3D"22ad5765f9f2" style=3D"text-align: center;"></p>
+<p local-id=3D"cfb2fef61f8a" style=3D"text-align: center;"></p>
+<p local-id=3D"687c584c91e2"></p>
+<div class=3D"table-wrap">
+<table data-table-width=3D"760" data-layout=3D"default" data-local-id=3D"7b=
+3c5026-46db-41aa-8630-b1d43373d6be" class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 224.0px;">
+<col style=3D"width: 534.0px;">
+</colgroup>
+<tbody>
+<tr data-local-id=3D"28cde412f917">
+<th data-local-id=3D"326f59eb9e7b" class=3D"confluenceTh">
+<p local-id=3D"0bf49a4aee66"><strong>Nazwa persony</strong></p>
+</th>
+<th data-highlight-colour=3D"#ffffff" data-local-id=3D"387603db819e" class=
+=3D"confluenceTh">
+<p local-id=3D"dec342e6b4ff"><strong>Micha=C5=82 lub Magdalena Kowalska</st=
+rong></p>
+</th>
+</tr>
+<tr data-local-id=3D"a16d2651d4fe">
+<td data-highlight-colour=3D"#f4f5f7" data-local-id=3D"a1559a58cbd9" class=
+=3D"confluenceTd">
+<p local-id=3D"270c2785d2cc"><strong>Stanowisko persony</strong></p>
+</td>
+<td data-local-id=3D"b12d1c225af7" class=3D"confluenceTd">
+<p local-id=3D"50fa04ca42c6"><em>Pracownik wiedzy. </em>Specjalista / Proje=
+ct Manager / Koordynator</p>
+</td>
+</tr>
+<tr data-local-id=3D"d85bdb293f6c">
+<td data-highlight-colour=3D"#f4f5f7" data-local-id=3D"620685d5fb83" class=
+=3D"confluenceTd">
+<p local-id=3D"f4ae16225681"><strong>Opis stanowiska</strong></p>
+</td>
+<td data-local-id=3D"73c885fa280f" class=3D"confluenceTd">
+<p local-id=3D"1dc00dd81c1d">Uporz=C4=85dkowana praca, sztywne deadline=E2=
+=80=99y, potrzeba niezawodnego sprz=C4=99tu, gdy=C5=BA jego brak oznacza st=
+rat=C4=99 finansow=C4=85.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p local-id=3D"9c36336a96c5"></p>
+<h2 local-id=3D"d6bd9aa98c9b" id=3D"Persona-Firma"><img class=3D"emoticon e=
+moticon-blue-star" data-emoji-id=3D"1f3e2" data-emoji-shortname=3D":office:=
+" data-emoji-fallback=3D"\uD83C\uDFE2" src=3D"defac5392d2497962f0edb262723e=
+91047a8522a55fb5118cdaeeab01159a5ac" width=3D"16" height=3D"16" data-emotic=
+on-name=3D"blue-star" alt=3D"(niebieska gwiazdka)">&nbsp;Firma</h2>
+<div class=3D"table-wrap">
+<table data-table-width=3D"760" data-layout=3D"default" data-local-id=3D"5f=
+45bf4c-93f9-46e1-8ef5-2fd932d9ba03" class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 229.0px;">
+<col style=3D"width: 531.0px;">
+</colgroup>
+<tbody>
+<tr data-local-id=3D"f7bf284dfa3a">
+<th data-highlight-colour=3D"#fffae6" data-local-id=3D"9e8ca3f8fe55" class=
+=3D"confluenceTh">
+<p local-id=3D"7ec652da40dc"><strong>Nazwa firmy</strong></p>
+</th>
+<td data-local-id=3D"4c9daa545f7b" class=3D"confluenceTd">
+<p local-id=3D"14ca262c4897"></p>
+</td>
+</tr>
+<tr data-local-id=3D"238d8caf4cc6">
+<th data-highlight-colour=3D"#fffae6" data-local-id=3D"efaa32ab4642" class=
+=3D"confluenceTh">
+<p local-id=3D"503f20b6d85c"><strong>Rozmiar firmy</strong></p>
+</th>
+<td data-local-id=3D"7ca7dd2b09df" class=3D"confluenceTd">
+<p local-id=3D"e6ad720c019a">=C5=9Arednia / Du=C5=BCa (250=E2=80=931000+ pr=
+acownik=C3=B3w)</p>
+</td>
+</tr>
+<tr data-local-id=3D"497bb0857ffd">
+<th data-highlight-colour=3D"#fffae6" data-local-id=3D"fbaa261d0362" class=
+=3D"confluenceTh">
+<p local-id=3D"a2354a62feee"><strong>Bran=C5=BCa</strong></p>
+</th>
+<td data-local-id=3D"e92f4c102f39" class=3D"confluenceTd">
+<p local-id=3D"8c1be836cdb9"><em>E-commerce / Finanse / Korporacja</em>.</p=
+>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 local-id=3D"69d5a498afe2" id=3D"Persona-Informacjedemograficzne"><img c=
+lass=3D"emoticon emoticon-blue-star" data-emoji-id=3D"1f465" data-emoji-sho=
+rtname=3D":busts_in_silhouette:" data-emoji-fallback=3D"\uD83D\uDC65" src=
+=3D"609bf3f3305f80dbc8152b2afd9a72d772f7a4e39e70186b3534a6a11f8f6d4f" width=
+=3D"16" height=3D"16" data-emoticon-name=3D"blue-star" alt=3D"(niebieska gw=
+iazdka)">&nbsp;Informacje demograficzne</h2>
+<div class=3D"table-wrap">
+<table data-table-width=3D"760" data-layout=3D"default" data-local-id=3D"76=
+3f039c-689c-4c56-9c85-02ed7781ccf0" class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 229.0px;">
+<col style=3D"width: 531.0px;">
+</colgroup>
+<tbody>
+<tr data-local-id=3D"0c82f2d28462">
+<th data-highlight-colour=3D"#deebff" data-local-id=3D"33aa535cadba" class=
+=3D"confluenceTh">
+<p local-id=3D"20b55b5c158e"><strong>Wiek</strong></p>
+</th>
+<td data-local-id=3D"18f66b847cad" class=3D"confluenceTd">
+<p local-id=3D"51ff11abec76">28</p>
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p local-id=3D"6ea976d5f562">Dane Smart Barometr: najwi=C4=99cej uszkodze=
+=C5=84 smartfon=C3=B3w wyst=C4=99puje w grupie 18=E2=80=9329 lat (63%) oraz=
+ 30=E2=80=9339 lat (48%). Po 40. roku =C5=BCycia odsetek uszkodze=C5=84 spa=
+da do 38%, a po 50. roku =C5=BCycia do 24%.</p>
+</div>
+</div>
+</td>
+</tr>
+<tr data-local-id=3D"f11871febcd1">
+<th data-highlight-colour=3D"#deebff" data-local-id=3D"dbe688ffb29b" class=
+=3D"confluenceTh">
+<p local-id=3D"fd396879bbf2"><strong>P=C5=82e=C4=87</strong></p>
+</th>
+<td data-local-id=3D"9cc34b96c188" class=3D"confluenceTd">
+<p local-id=3D"d56c4ee82e99">Kobieta</p>
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p local-id=3D"fc8c86afe299">odpowiadaj=C4=85 za <strong>52% zg=C5=82osze=
+=C5=84 awarii ekran=C3=B3w</strong> (<em>iMagazine.pl</em>.)</p>
+</div>
+</div>
+</td>
+</tr>
+<tr data-local-id=3D"5725d0ab1e6e">
+<th data-highlight-colour=3D"#deebff" data-local-id=3D"8de7a12ba7ec" class=
+=3D"confluenceTh">
+<p local-id=3D"63eb8141a105"><strong>Przych=C3=B3d</strong></p>
+</th>
+<td data-local-id=3D"128c694a205c" class=3D"confluenceTd">
+<p local-id=3D"dd6eae012da1">9000 z=C5=82 netto</p>
+</td>
+</tr>
+<tr data-local-id=3D"a9e8c8c66922">
+<th data-highlight-colour=3D"#deebff" data-local-id=3D"f16327d7c5dd" class=
+=3D"confluenceTh">
+<p local-id=3D"79aa8d1c64d4"><strong>Poziom wykszta=C5=82cenia</strong></p>
+</th>
+<td data-local-id=3D"022213d77f2d" class=3D"confluenceTd">
+<p local-id=3D"40484ac89ca4">Wy=C5=BCsze</p>
+</td>
+</tr>
+<tr data-local-id=3D"6774b107bcd5">
+<th data-highlight-colour=3D"#deebff" data-local-id=3D"e781b458d013" class=
+=3D"confluenceTh">
+<p local-id=3D"9e1c94fb4e60"><strong>=C5=9Arodowisko mieszkalne</strong></p=
+>
+</th>
+<td data-local-id=3D"6eb67b77a5a7" class=3D"confluenceTd">
+<p local-id=3D"375952783630">Du=C5=BCa aglomeracja</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 local-id=3D"0cc6af3d8776" id=3D"Persona-W=C5=82asnycytat"><img class=3D=
+"emoticon emoticon-blue-star" data-emoji-id=3D"1f58b" data-emoji-shortname=
+=3D":pen_fountain:" data-emoji-fallback=3D"\uD83D\uDD8B" src=3D"3e570e356cc=
+dbbfa022fd500b8eb14f59dba5fb70d07ad050de59faab3a359a5" width=3D"16" height=
+=3D"16" data-emoticon-name=3D"blue-star" alt=3D"(niebieska gwiazdka)">&nbsp=
+;W=C5=82asny cytat</h2>
+</div>
+</div>
+</div>
+<div class=3D"columnLayout two-equal" data-layout=3D"two-equal">
+<div class=3D"cell normal" data-type=3D"normal">
+<div class=3D"innerCell">
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p local-id=3D"01e6af6cc7e7">84% konsument=C3=B3w w badaniach warsztatowych=
+ =C5=BC=C4=85da wyceny przed napraw=C4=85 (<em>Kantar / MagazynAuto</em>), =
+a 50% nie ufa serwisom</p>
+</div>
+</div>
+</div>
+</div>
+<div class=3D"cell normal" data-type=3D"normal">
+<div class=3D"innerCell">
+<ul local-id=3D"33a8208620bc">
+<li local-id=3D"8b384974b51d">
+<p local-id=3D"f8bee36a03e5">=E2=80=9CChc=C4=99 unikn=C4=85=C4=87 =E2=80=9E=
+pan=C3=B3w z budki w piwnicy=E2=80=9D, mie=C4=87 transparentn=C4=85 cen=C4=
+=99 z g=C3=B3ry, opcj=C4=99 Paczkomatu i p=C5=82atno=C5=9Bci BLIK/Apple Pay=
+.=E2=80=9D</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class=3D"columnLayout fixed-width" data-layout=3D"fixed-width">
+<div class=3D"cell normal" data-type=3D"normal">
+<div class=3D"innerCell">
+<h2 local-id=3D"2d4dbbda05e7" id=3D"Persona-Biografia"><img class=3D"emotic=
+on emoticon-scroll" data-emoji-id=3D"1f4dc" data-emoji-shortname=3D":scroll=
+:" data-emoji-fallback=3D"\uD83D\uDCDC" src=3D"97e19ad4b725bf287bbb036b6cc5=
+56924b0eecae14ad52fa901ec4c5ac229fe8" width=3D"16" height=3D"16" data-emoti=
+con-name=3D"scroll" alt=3D"content.emoticon.scroll">&nbsp;Biografia</h2>
+<p local-id=3D"f56c19f5a013">Typowa =C5=9Bcie=C5=BCka: Studia =E2=86=92 Sta=
+=C5=BC =E2=86=92 Etat. Ma m=C4=99=C5=BCa/=C5=BCon=C4=99 i dziecko, zarobek =
+pozwala na sp=C5=82ate kredytu hipotecznego</p>
+<div class=3D"table-wrap">
+<table data-table-width=3D"760" data-layout=3D"default" data-local-id=3D"1d=
+28d4df-7e48-4beb-9135-9cadba1f883d" class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 380.0px;">
+<col style=3D"width: 380.0px;">
+</colgroup>
+<tbody>
+<tr data-local-id=3D"938b0b898711">
+<th data-highlight-colour=3D"#e6fcff" data-local-id=3D"155ff73f9a3e" class=
+=3D"confluenceTh">
+<p local-id=3D"0cc46ebf0e5d"><strong>Cele zawodowe</strong></p>
+</th>
+<th data-highlight-colour=3D"#fffae6" data-local-id=3D"28ef0de97ebf" class=
+=3D"confluenceTh">
+<p local-id=3D"a8c464810f34"><strong>Motywacje</strong></p>
+</th>
+</tr>
+<tr data-local-id=3D"6e81d0640791">
+<td data-local-id=3D"f56c02f4877f" class=3D"confluenceTd">
+<ul local-id=3D"c946428746a1">
+<li local-id=3D"34c828847a68">
+<p local-id=3D"ba0179f68275">Ci=C4=85g=C5=82o=C5=9B=C4=87 pracy, brak przes=
+toj=C3=B3w, oszcz=C4=99dno=C5=9B=C4=87 czasu.</p>
+</li>
+</ul>
+</td>
+<td data-local-id=3D"b87b59d37999" class=3D"confluenceTd">
+<ul local-id=3D"4f883b7287e1">
+<li local-id=3D"a2818cf46151">
+<p local-id=3D"b6e2a2c4d449">Wygoda, szybko=C5=9B=C4=87, przezroczysto=C5=
+=9B=C4=87 dzia=C5=82a=C5=84, logistyka door-to-door, cena</p>
+</li>
+</ul>
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p local-id=3D"33bc8c01dcbd">Badania Fixit i Eurobarometer: Ekologia jest m=
+otywacj=C4=85 wt=C3=B3rn=C4=85, a kluczowa jest kalkulacja finansowa (oszcz=
+=C4=99dno=C5=9B=C4=87 50=E2=80=9370% wzgl=C4=99dem zakupu nowego) oraz wygo=
+da. Ponadto Door-to-Door w Polsce oznacza w 82% Paczkomat InPost, a nie kur=
+iera do r=C4=85k w=C5=82asnych.</p>
+</div>
+</div>
+</td>
+</tr>
+<tr data-local-id=3D"ea261cfd1fc8">
+<th data-highlight-colour=3D"#e3fcef" data-local-id=3D"25f0bd963508" class=
+=3D"confluenceTh">
+<p local-id=3D"ec4d763d993a"><strong>Wyzwania</strong></p>
+</th>
+<th data-highlight-colour=3D"#deebff" data-local-id=3D"d0044152baee" class=
+=3D"confluenceTh">
+<p local-id=3D"cc0d6252adbd"><strong>=C5=B9r=C3=B3d=C5=82a informacji</stro=
+ng></p>
+</th>
+</tr>
+<tr data-local-id=3D"a0459ec9b1c4">
+<td data-local-id=3D"ad0bcd279519" class=3D"confluenceTd">
+<ul local-id=3D"4ffaad706bdb">
+<li local-id=3D"e8dc407523fe">
+<p local-id=3D"0471f2e5d0a5">Brak przejrzysto=C5=9Bci cen, nieznane kompete=
+ncje serwis=C3=B3w, ryzyko utraty danych.</p>
+</li>
+</ul>
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p local-id=3D"6f77d4085015">Badania pokazuj=C4=85, =C5=BCe 59% Polak=C3=B3=
+w rezygnuje z naprawy z powodu nieznanych lub wyg=C3=B3rowanych koszt=C3=B3=
+w (Infor), a 50% nie ufa serwisom (Kantar). Ryzyko wycieku danych z telefon=
+u/laptopa to jeden z top 3 obaw konsument=C3=B3w.</p>
+</div>
+</div>
+</td>
+<td data-local-id=3D"06477ca08eaa" class=3D"confluenceTd">
+<ul local-id=3D"be0c0b8559d1">
+<li local-id=3D"386b4a8143a3">
+<p local-id=3D"4e4d5773551c">Reddit, Wykop, Google Maps, YouTube Tech, Rekl=
+ama online.</p>
+</li>
+</ul>
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p local-id=3D"81b941d70e09">dla 80% Polak=C3=B3w kluczowe s=C4=85: Google =
+Search (SEO/SEM), opinie Google Maps, por=C3=B3wnywarki cenowe oraz rekomen=
+dacje znajomych/rodziny. (Badanie User Journey Kantar, raporty UOKiK)</p>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p local-id=3D"8367a1f8-4376-443c-ac54-3e23fcd65719"></p>
+</div>
+</div>
+</div>
+</div>
+    </div>
+</body>
+</html>
+------=_Part_44_878824397.1793125512576
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Location: file:///C:/defac5392d2497962f0edb262723e91047a8522a55fb5118cdaeeab01159a5ac
+
+iVBORw0KGgoAAAANSUhEUgAAAEgAAABIBAMAAACnw650AAAAJFBMVEVHcEzayLHayLHx3MHx3MHa
+yLHayLHx3MHayLFVrO47iMNmdX/znOVGAAAAB3RSTlMAUN9Q3xBgGOcEgQAAALRJREFUeF7t1DEK
+xCAQBdAJYbe2zBEs0+UIHiiCdazmCl4hV/Byu0Y006y/Cbss8ZMB+bxiJCDdKoNm9gqgid/ZANIJ
++bZ58JE2emak0Ep4KZ2RByvlNFEIfHzUyhfQUK6kiGtEW35XziaQbFN0QV4g2aZwzYcj0WjcmROJ
+0s60OITcSgYjSw4j9w9o39P8HIVQRiDRXoo66qij616VG9wuxjrMMeYR7aXIYGRpwWil0SBk5xct
+pSBxAwAzRQAAAABJRU5ErkJggg==
+------=_Part_44_878824397.1793125512576
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Location: file:///C:/97e19ad4b725bf287bbb036b6cc556924b0eecae14ad52fa901ec4c5ac229fe8
+
+iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAAUVBMVEVHcEz/6Lb/2YP/6Lb/2YP/
+6Lb/2YP/6Lb/6Lb/2YP/2YP/6Lb/6LbBaU//2YPJeVzgoWnswJb/35b/5Kn/5azjnz3/24n/57P/
+46buumr20ZCbEHVCAAAADHRSTlMAIGDvIM+/YL/P7xDnW/YUAAAA8klEQVR4Xu2YiwqDMAxFnZtO
+t6Q+9/z/D50VWbQy1nILwpbzAQcSb4WbxOVY0EDXGm/yNFmzy2iiv/qrysPKs6c3twDTyTVlNKM3
+/pTOfqygqZirxpraANNyT4X18Ig1dQGifCGigYpHKhowAcw9ZyviiS1F8UdLKNqyY31+IjSQIkKf
+iIjARyuixxP6jYjoEogI/kdkAlHRJ1RUsxf1VxF7EluEj/azOdIcaY40R5ojzZHmSLr+vQWXLV0f
+EEnXx0UZwSK36wMip+sDIqcQoyKeiCbadDTssCLk2KlHSKHjk1CC5zDp+9iBTvo+fDJc9/0Xy+/a
+DHi3P2wAAAAASUVORK5CYII=
+------=_Part_44_878824397.1793125512576
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Location: file:///C:/3e570e356ccdbbfa022fd500b8eb14f59dba5fb70d07ad050de59faab3a359a5
+
+iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAAmVBMVEVHcEyZqrWZqrUxNz1mdX+Z
+qrWZqrWZqrWZqrVmdX+ZqrWZqrUxNz2ZqrWZqrVmdX+ZqrUxNz2ZqrVmdX9mdX+ZqrUxNz0xNz0x
+Nz1mdX+ZqrUxNz0xNz0xNz1GUFdga3RRXGVUXWVUYGk8Q0pmdX9mdX9mdX9hb3hmdX+ZqrWZqrUx
+Nz1mdX9YYmpSXmZjcXs7Q0lFTlZfaXKMYdoeAAAAKnRSTlMAEECfMO/PnzDvgN/vIGCfrzC/gM+P
+v2Dfv3BAzxDvr59gMO9QEECfcFC+J/JLAAABi0lEQVR4Xq3S2XLCMAyGUcXZIGkCZSl03zcnXd//
+4UqT6fydEQRL4rv3GcsyKUvm8/kDmUsW7W+LxOgc33+0XePE5hw1n5BMTmOT4NgkODYJjk2CY5Pg
+WCU4dgkOlx5tDqQXmwPp1OZAWhgcSIIbJVcAtkqTQGfcfg1LT6FOOyw9BzvDUhzk3HUOJKmDfb23
+kCxO00CyOUxSOkxSOkxSOlzSOlzSOlzSOlzSOlzSOlzSOlyyOZAmWgeS1YFkdSAFOpfrZk83FNRq
+nxNTWCdmB5DdAWR3KLY56PZAjku/D+IU3vs3uxNNvYekd0al95D0Tp16D0nv5B5BEjtVBgWS3HEY
+C5LCKTziUizZ+oAUC7fOu77YMOuVcOu8jIjOKbxdTlqRLL8jJ3SqHsidq0uPfEHCXOecddvL4ExJ
+Wt29K27XV0ZiqPg/x99w6YjE5dugmuTNtoyWk6ISJ7vHBiusd6Il1p9WGqfqnUz5E5FjTkGqajj4
+iZoKOPiJmkbY1WxZ1K4idfkGeHUR2foBpxknavZrTFgAAAAASUVORK5CYII=
+------=_Part_44_878824397.1793125512576
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Location: file:///C:/609bf3f3305f80dbc8152b2afd9a72d772f7a4e39e70186b3534a6a11f8f6d4f
+
+iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAAk1BMVEVHcEwiZplVrO5VrO5VrO4i
+ZplVrO4iZplVrO4iZplVrO4iZplVrO4iZpkiZplVrO4iZplVrO4iZpkiZpkiZplVrO5VrO4iZplV
+rO5VrO4iZplVrO4iZpkiZplVrO4xerEiZplVrO4veK4sc6lPo+Mlap44hb4/jclCks5Im9lFltM1
+gLkob6RLn948icRSqOkyfLTrzL1IAAAAIHRSTlMAn59AEBDvv7/vMDCPYFBgICBA34DfcM/PgI9Q
+r3Cv33gbXUAAAAG0SURBVHja3dZXUsMwEIBhd1kuiWtCHMoqvQL3Px0zeQqWtbsKMAH+A3xjrWTZ
+zj1KJll8KZsktyvlrFVXRd5tVpAprbi0d/xWDRSNbZ2xMuTZOsYyq3UppLnFnCMMagM2NFNoE4sH
+Qmv5kyYqmZCHM/xxxxQ0+4cQvf/pUycudU8pPWzfoBRNDVfJlzMBecEQE3agtVjh0sOAVNUw0Hpn
+O6UcDB1RKNYdYxsbqAKkAx8KJQad3szQ82eoAbStGRprD4R14m5/DkQrA+P3jpFLQQfmd0RQ0Ct2
+QX4dip1vghJ7aItPiD/s/dCW6U4qKOion+2o1JxCAtmyL0UJsjCsLeOSrTnQQnvF9OAGyPlRaMqB
+3hlQw4F2vcM4D3QonLK2v5/n61JFMfvByzbWqUcc2rC/tDl1QZpqE+RQ4ltPvCojDDorTArYU9oo
+NI97BpYKL+pfSnLYWa8UkcOS1mfFgeiB7xVZyflF2tFOzLpQHEa/HqoaMdWhbhRaKSNXgim3YjN5
+DWiCRxUCyNyQsSoJjOqUdICXJKRCAlfCV+cCOxeFgJ9EVwYWOVh3gQoMEnxHOH+oD+qQe2emyBLU
+AAAAAElFTkSuQmCC
+------=_Part_44_878824397.1793125512576--

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.next/
+.turbo/
+*.tsbuildinfo
+build/
+android/app/build/
+android/.gradle/
+.gradle/
+**/android/app/build/
+**/android/.gradle/
+**/.gradle/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/migrations/migration_lock.toml
+
+# MinIO
+minio_data/
+
+# Coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*

@@ -1,0 +1,43 @@
+export const ORDER_STATUSES = [
+  'Draft',
+  'Diagnosed',
+  'OrderConfirmed',
+  'LabelGenerated',
+  'InTransitToHub',
+  'ReceivedAtWorkshop',
+  'InspectionConfirmed',
+  'PriceAdjustmentNeeded',
+  'RepairInProgress',
+  'QualityControl',
+  'ReturnInTransit',
+  'Delivered',
+  'FundsReleased',
+  'Disputed',
+  'UnderInvestigation',
+  'Cancelled',
+  'CancelledAndReturned',
+  'Closed',
+] as const;
+
+export type OrderStatusType = (typeof ORDER_STATUSES)[number];
+
+export const ALLOWED_ORDER_TRANSITIONS: Record<OrderStatusType, readonly OrderStatusType[]> = {
+  Draft: ['Diagnosed', 'Cancelled'],
+  Diagnosed: ['OrderConfirmed', 'Draft', 'Cancelled'],
+  OrderConfirmed: ['LabelGenerated', 'Cancelled'],
+  LabelGenerated: ['InTransitToHub', 'Cancelled'],
+  InTransitToHub: ['ReceivedAtWorkshop'],
+  ReceivedAtWorkshop: ['InspectionConfirmed', 'PriceAdjustmentNeeded'],
+  PriceAdjustmentNeeded: ['InspectionConfirmed', 'CancelledAndReturned'],
+  InspectionConfirmed: ['RepairInProgress', 'CancelledAndReturned'],
+  RepairInProgress: ['QualityControl'],
+  QualityControl: ['ReturnInTransit'],
+  ReturnInTransit: ['Delivered'],
+  Delivered: ['FundsReleased', 'Disputed'],
+  FundsReleased: ['Closed'],
+  Disputed: ['UnderInvestigation'],
+  UnderInvestigation: ['Closed', 'FundsReleased', 'CancelledAndReturned'],
+  Cancelled: [],
+  CancelledAndReturned: [],
+  Closed: [],
+};

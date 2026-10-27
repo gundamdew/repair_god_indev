@@ -1,0 +1,35 @@
+{
+  "name": "@repair-god/fsm",
+  "version": "0.1.0",
+  "description": "Deterministic Finite State Machine for Order and Shipment lifecycles",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit",
+    "pretest": "tsc",
+    "test": "node --test \"dist/__tests__/**/*.test.js\""
+  },
+  "dependencies": {
+    "@repair-god/contracts": "workspace:*",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@repair-god/tsconfig": "workspace:*",
+    "@types/node": "^26.6.5",
+    "typescript": "^5.7.0"
+  }
+}

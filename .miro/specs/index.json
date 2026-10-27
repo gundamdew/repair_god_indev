@@ -1,0 +1,20 @@
+{
+  "board_url": "https://miro.com/app/board/uXjVEa_aVhY=/?moveToWidget=3458764528358257793&cot=14",
+  "extracted_at": "2026-10-27T15:55:00Z",
+  "items": [
+    {
+      "id": "3458764528358257793",
+      "type": "table",
+      "title": "The Idea Napkin - Cyfrowy serwis naprawy i wydłużania żywotności urządzeń",
+      "file": "tables/3458764528358257793.json"
+    }
+  ],
+  "images": [],
+  "summary": {
+    "total_items": 1,
+    "by_type": {
+      "table": 1
+    },
+    "total_images": 0
+  }
+}

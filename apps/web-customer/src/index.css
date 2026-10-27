@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --ink: #1d1f2b;
+  --muted: #6b6f80;
+  --line: rgba(29, 31, 43, 0.08);
+  --accent: #3f4a8a;
+  --accent-soft: #e6e8f6;
+  --success: #3d7a5c;
+  --warn: #a8742a;
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.78);
+  --btn-primary-bg: #1d1f2b;
+  --btn-primary-text: #ffffff;
+  --nav-active-bg: #1d1f2b;
+  --nav-active-text: #ffffff;
+  --bubble-user-bg: #1d1f2b;
+  --bubble-user-text: #ffffff;
+  --app-bg: radial-gradient(60% 40% at 15% 0%, #e9edd2 0%, transparent 70%),
+    radial-gradient(55% 45% at 100% 20%, #dcd9f2 0%, transparent 70%),
+    radial-gradient(70% 50% at 50% 100%, #d6e3e6 0%, transparent 70%),
+    #f2f2f5;
+}
+
+.dark {
+  --ink: #f2f3f8;
+  --muted: #9ba1b6;
+  --line: rgba(255, 255, 255, 0.12);
+  --accent: #7b88d4;
+  --accent-soft: #282c47;
+  --success: #5eb888;
+  --warn: #e0a34b;
+  --glass: rgba(25, 27, 38, 0.70);
+  --glass-strong: rgba(32, 36, 52, 0.88);
+  --btn-primary-bg: #ffffff;
+  --btn-primary-text: #13141c;
+  --nav-active-bg: #ffffff;
+  --nav-active-text: #13141c;
+  --bubble-user-bg: #2d3356;
+  --bubble-user-text: #ffffff;
+  --app-bg: radial-gradient(60% 40% at 15% 0%, #1c221c 0%, transparent 70%),
+    radial-gradient(55% 45% at 100% 20%, #221f35 0%, transparent 70%),
+    radial-gradient(70% 50% at 50% 100%, #182327 0%, transparent 70%),
+    #13141c;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--app-bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Manrope', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.app-bg {
+  background: var(--app-bg);
+  background-attachment: fixed;
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 30px rgba(40, 45, 80, 0.06);
+}
+
+.glass-strong {
+  background: var(--glass-strong);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.dark .glass {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.dark .glass-strong {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.grad-pearl { background: linear-gradient(135deg, #eef0d8 0%, #dcdcf3 55%, #d5e4ea 100%); }
+.grad-ink { background: linear-gradient(140deg, #2a2e45 0%, #3f4a8a 100%); color: #fff; }
+.grad-sage { background: linear-gradient(140deg, #dbe8df 0%, #c9dccf 100%); }
+.grad-lilac { background: linear-gradient(140deg, #e6e3f6 0%, #d4d0ef 100%); }
+.grad-sand { background: linear-gradient(140deg, #f3ece0 0%, #e8dcc8 100%); }
+
+.dark .grad-pearl { background: linear-gradient(135deg, #242721 0%, #232238 55%, #1a2529 100%); }
+.dark .grad-ink { background: linear-gradient(140deg, #161825 0%, #2f376a 100%); color: #fff; }
+.dark .grad-sage { background: linear-gradient(140deg, #1b261f 0%, #152219 100%); }
+.dark .grad-lilac { background: linear-gradient(140deg, #25223a 0%, #1d1a30 100%); }
+.dark .grad-sand { background: linear-gradient(140deg, #2b2419 0%, #211a10 100%); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+@keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.screen-in { animation: fade-in 0.25s ease-out; }
+
+@keyframes stamp-spin { to { transform: rotate(360deg); } }
+.stamp-spin { animation: stamp-spin 20s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .stamp-spin { animation: none; } }
+
+.num, .num-grid > * > :last-child {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.num-grid > * {
+  min-width: 0;
+}
