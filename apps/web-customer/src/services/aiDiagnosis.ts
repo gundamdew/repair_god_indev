@@ -14,9 +14,9 @@ export interface DiagnosticResult {
 }
 
 const CANDIDATE_MODELS = [
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
   "gemini-3.5-flash",
-  "gemini-flash-latest",
-  "gemini-2.5-flash-lite",
   "gemini-3.8-flash"
 ]
 
@@ -32,21 +32,25 @@ Rozmawiasz z klientem o imieniu: ${userName || "Klient"}.
 Język odpowiedzi: ${lang === "PL" ? "Polski" : lang === "UA" ? "Ukraiński" : lang === "RU" ? "Rosyjski" : "Angielski"}.
 
 Twoje zadania:
-1. Przeanalizuj opis problemu oraz załączone zdjęcia uszkodzeń (jeśli są).
-2. Odpowiedz profesjonalnie, zwięźle (2-4 zdania).
-3. Jeśli objawy są jasne (lub klient przesłał zdjęcie lub napisał kolejną wiadomość), podaj:
-   - Co jest uszkodzone (np. moduł wyświetlacza, bateria, gniazdo zasilania, układ PMIC na płycie głównej)
-   - Szacowany koszt naprawy w PLN (np. 299 zł, 349 zł, 189 zł)
-   - Czas naprawy (np. 1–2 dni)
-4. Na samym końcu wiadomości dodaj ukryty blok metadanych diagnozy w formacie:
-<<<DIAG:{"title":"Wymiana wyświetlacza","priceFrom":"299 zł","days":"1–2 dni","confidence":"89%"}>>>`
+1. Odpowiadaj na pytania użytkownika w naturalny, pomocny i profesjonalny sposób. Jeśli pytanie dotyczy urządzeń, elektroniki lub napraw – zdiagnozuj problem i zaproponuj rozwiązanie. Jeśli użytkownik zadaje inne pytania (np. luźna rozmowa, ciekawostki, przepisy), odpowiedz uprzejmie i ze smakiem nawiąż do serwisu urządzeń domowych/elektroniki.
+2. W przypadku zgłoszenia uszkodzenia sprzętu lub przesłania zdjęcia:
+   - Zdiagnozuj co uległo uszkodzeniu (np. wyświetlacz, bateria, port USB, układ zasilania)
+   - Podaj szacowany koszt w PLN (np. 189 zł, 299 zł)
+   - Podaj szacowany czas naprawy (np. 1–2 dni)
+   - Na samym końcu wiadomości dodaj ukryty blok:
+<<<DIAG:{"title":"Nazwa naprawy","priceFrom":"299 zł","days":"1–2 dni","confidence":"89%"}>>>`
 
   if (apiKey) {
-    // Format contents for Gemini API (multimodal: text + inline images)
-    const contents: any[] = []
+    // Format contents for Gemini API with strict alternating turns (user -> model -> user)
+    const cleanContents: { role: "user" | "model"; parts: any[] }[] = []
 
-    // Add conversation history
-    for (const msg of history) {
+    // If first message in history is the initial AI greeting, skip it so the sequence starts with user
+    const conversation = [...history]
+    if (conversation.length > 0 && conversation[0]?.ai) {
+      conversation.shift()
+    }
+
+    for (const msg of conversation) {
       const parts: any[] = []
 
       // If user attached an image, convert to Gemini inlineData
@@ -63,35 +67,26 @@ Twoje zadania:
       }
 
       if (msg.t) {
-        parts.push({ text: (msg.ai ? "Asystent: " : "Klient: ") + msg.t })
+        parts.push({ text: msg.t })
       }
 
       if (parts.length > 0) {
-        contents.push({
-          role: msg.ai ? "model" : "user",
-          parts
-        })
+        const role = msg.ai ? "model" : "user"
+        const last = cleanContents[cleanContents.length - 1]
+        // Merge consecutive turns with the same role to satisfy Gemini API constraints
+        if (last && last.role === role) {
+          last.parts.push(...parts)
+        } else {
+          cleanContents.push({ role, parts })
+        }
       }
     }
-
-    // Add system prompt context as first user turn or prepended
-    const fullContents = [
-      {
-        role: "user",
-        parts: [{ text: `[INSTRUKCJA SYSTEMOWA: ${systemInstructions}]\n\nRozpoczynamy diagnozę.` }]
-      },
-      {
-        role: "model",
-        parts: [{ text: "Rozumiem. Jestem gotowy do przeprowadzenia diagnozy urządzenia." }]
-      },
-      ...contents
-    ]
 
     // Try candidate models in order until one responds
     for (const model of CANDIDATE_MODELS) {
       try {
         const controller = new AbortController()
-        const timeout = setTimeout(() => controller.abort(), 7000)
+        const timeout = setTimeout(() => controller.abort(), 20000)
 
         const res = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
@@ -99,9 +94,12 @@ Twoje zadania:
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              contents: fullContents,
+              systemInstruction: {
+                parts: [{ text: systemInstructions }]
+              },
+              contents: cleanContents,
               generationConfig: {
-                temperature: 0.3
+                temperature: 0.4
               }
             }),
             signal: controller.signal
@@ -136,6 +134,9 @@ Twoje zadania:
 
             return { reply: cleanReply, result }
           }
+        } else {
+          const errData = await res.json().catch(() => null)
+          console.warn(`Model ${model} returned ${res.status}:`, errData)
         }
       } catch (err) {
         console.warn(`Model ${model} failed, trying fallback model...`, err)
@@ -143,9 +144,9 @@ Twoje zadania:
     }
   }
 
-  // Fallback heuristic if offline or API unavailable
+  // Fallback heuristic if offline or all API models exhausted
   const lastUserMsg = history[history.length - 1]?.t.toLowerCase() || ""
-  let fallbackReply = "Rozumiem problem. Czy urządzenie reaguje na dotyk, czy widać pasy na ekranie lub czy się nagrzewa?"
+  let fallbackReply = "Przepraszam, chwilowo nie mogę połączyć się z serwerem AI (wyczerpany dzienny limit zapytań Google Free Tier lub brak sieci). Jeśli potrzebujesz wyceny, opisz uszkodzenie lub wybierz kategorię z listy."
   let fallbackResult: DiagnosticResult | undefined = undefined
 
   if (lastUserMsg.includes("ekran") || lastUserMsg.includes("szyb") || lastUserMsg.includes("screen") || lastUserMsg.includes("экран")) {
