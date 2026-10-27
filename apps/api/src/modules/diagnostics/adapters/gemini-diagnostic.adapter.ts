@@ -14,7 +14,7 @@ export class GeminiDiagnosticAdapter implements IDiagnosticEnginePort {
 
   async diagnose(input: TriageInput): Promise<AIDiagnosticOutput> {
     const apiKey = this.configService.get<string>('GEMINI_API_KEY');
-    const model = this.configService.get<string>('GEMINI_MODEL', 'gemini-2.0-flash');
+    const model = this.configService.get<string>('GEMINI_MODEL', 'gemini-flash-latest');
 
     this.logger.log(
       `Running AI Diagnostic triage for ${input.brand} ${input.model} (engine: ${
@@ -22,11 +22,62 @@ export class GeminiDiagnosticAdapter implements IDiagnosticEnginePort {
       })`,
     );
 
-    // If an API key is provided and live external calls are desired in production,
-    // this adapter could query Google Gemini API.
-    // For reliable dev operation without required live 3rd-party keys, we implement
-    // an expert heuristic triage engine that produces full Gemini-structured output:
+    if (apiKey && apiKey.trim().length > 0) {
+      try {
+        const liveResult = await this.callGeminiApi(apiKey.trim(), model, input);
+        if (liveResult) return liveResult;
+      } catch (err) {
+        this.logger.warn(`Live Gemini call failed, using heuristic triage: ${err}`);
+      }
+    }
+
     return this.simulateGeminiTriage(input);
+  }
+
+  private async callGeminiApi(apiKey: string, model: string, input: TriageInput): Promise<AIDiagnosticOutput | null> {
+    const prompt = `Jesteś ekspertem diagnostyki sprzętu elektronicznego w platformie Repair God.
+Zdiagnozuj urządzenie na podstawie parametrów:
+- Kategoria: ${input.category}
+- Marka i model: ${input.brand} ${input.model}
+- Objawy: ${input.symptoms.join(', ')}
+- Opis użytkownika: ${input.userDescription || 'Brak'}
+
+Odpowiedz WYŁĄCZNIE poprawnym obiektem JSON w formacie:
+{
+  "suspectedFailure": ["nazwa usterki 1", "nazwa usterki 2"],
+  "severity": "LOW" | "MEDIUM" | "HIGH" | "CRITICAL",
+  "batteryHazardWarning": boolean,
+  "estimatedPartsRequired": ["część 1", "część 2"],
+  "repairFeasibilityScore": number (od 0.0 do 1.0),
+  "estimatedPriceRangeGrosze": { "min": number (w groszach), "max": number (w groszach) },
+  "estimatedTurnaroundDays": { "min": number, "max": number },
+  "confidence": number (od 0.0 do 1.0),
+  "technicianFocusNotes": "Krótka notatka dla serwisanta"
+}`;
+
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.2,
+        },
+      }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Gemini HTTP error ${res.status}: ${errText}`);
+    }
+
+    const data = (await res.json()) as any;
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!rawText) throw new Error('Empty response from Gemini');
+
+    const parsed = JSON.parse(rawText) as AIDiagnosticOutput;
+    return parsed;
   }
 
   private simulateGeminiTriage(input: TriageInput): AIDiagnosticOutput {
@@ -99,37 +150,31 @@ export class GeminiDiagnosticAdapter implements IDiagnosticEnginePort {
         suspectedFailure: ['Uszkodzenie kontrolera zasilania PMIC', 'Uszkodzona cewka sekcji DC-DC'],
         severity: 'HIGH',
         batteryHazardWarning: false,
-        estimatedPartsRequired: ['Układ scalony PMIC', 'Spoiwo bezołowiowe SAC305'],
-        repairFeasibilityScore: 0.78,
+        estimatedPartsRequired: ['Układ scalony PMIC', 'Mikrolut BGA'],
+        repairFeasibilityScore: 0.75,
         estimatedPriceRangeGrosze: {
-          min: 42000, // 420 PLN
-          max: 85000, // 850 PLN
+          min: 30000, // 300 PLN
+          max: 60000, // 600 PLN
         },
-        estimatedTurnaroundDays: { min: 3, max: 6 },
-        confidence: 0.81,
-        technicianFocusNotes: 'Diagnoza oscyloskopowa szyny I2C/SPI oraz pomiary spadków napięć w trybie diody.',
+        estimatedTurnaroundDays: { min: 2, max: 4 },
+        confidence: 0.85,
+        technicianFocusNotes: 'Diagnoza oscyloskopowa szyn zasilania PMIC i przetwornic impulsowych.',
       };
     }
 
-    // Standard Screen / Glass replacement
-    const isPremium = input.model.includes('Pro') || input.model.includes('Ultra');
-    const minGrosze = isPremium ? 49000 : 32000; // 490 PLN or 320 PLN
-    const maxGrosze = isPremium ? 89000 : 54000; // 890 PLN or 540 PLN
-
     return {
-      suspectedFailure: ['Rozbita matryca OLED / digitizer', 'Pęknięcie warstwy dotykowej szkła zewnętrznego'],
-      severity: isDisplay ? 'MEDIUM' : 'LOW',
+      suspectedFailure: ['Pęknięcie matrycy OLED/IPS', 'Uszkodzenie digitizera dotyku'],
+      severity: 'MEDIUM',
       batteryHazardWarning: false,
-      estimatedPartsRequired: [`Moduł wyświetlacza OLED OEM (${input.brand} ${input.model})`, 'Uszczelka wodoszczelna korpusu'],
-      repairFeasibilityScore: 0.96,
+      estimatedPartsRequired: [`Oryginalny moduł wyświetlacza (${input.brand} ${input.model})`, 'Uszczelka wodoszczelna'],
+      repairFeasibilityScore: 0.99,
       estimatedPriceRangeGrosze: {
-        min: minGrosze,
-        max: maxGrosze,
+        min: 29900, // 299 PLN
+        max: 45000, // 450 PLN
       },
       estimatedTurnaroundDays: { min: 1, max: 2 },
-      confidence: 0.92,
-      technicianFocusNotes:
-        'Wymiana modułu ekranu wraz z programowaniem układu TrueTone / czujnika zbliżeniowego oraz aplikacją nowej uszczelki IP68.',
+      confidence: 0.96,
+      technicianFocusNotes: 'Przeniesienie układu scalonego eeprom lub programowanie TrueTone/ambient light sensor po wymianie.',
     };
   }
 }

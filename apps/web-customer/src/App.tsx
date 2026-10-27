@@ -81,14 +81,56 @@ function Diagnosis({ nav, userName }: { nav: Nav; userName: string }) {
   const [msgs, setMsgs] = useState<{ ai: boolean; t: string }[]>([{ ai: true, t: d.initialAiMsg }])
   const [input, setInput] = useState("")
   const [stage, setStage] = useState(0)
+  const [isTyping, setIsTyping] = useState(false)
 
-  const send = (text: string) => {
-    if (!text.trim()) return
-    setMsgs(m => [...m, { ai: false, t: text }])
+  const send = async (text: string) => {
+    if (!text.trim() || isTyping) return
+    const userText = text.trim()
+    const updated = [...msgs, { ai: false, t: userText }]
+    setMsgs(updated)
     setInput("")
+    setIsTyping(true)
+
+    const geminiKey = (import.meta.env.VITE_GEMINI_API_KEY as string | undefined)?.trim()
+    if (geminiKey) {
+      try {
+        const conversationPrompt = `Jesteś ekspertem diagnostyki urządzeń elektronicznych (smartfony, laptopy, konsole, tablety) w aplikacji Repair God.
+Rozmawiasz z klientem: ${userName || "Klient"}.
+Odpisz zwięźle (2-4 zdania), profesjonalnie i w języku, w którym pisze klient.
+Jeśli to pierwsza wiadomość, dopytaj o markę, model i objawy.
+Jeśli klient opisał problem (lub to kolejna wiadomość), podaj wstępną diagnozę przyczyny, rekomendowaną naprawę oraz orientacyjny koszt w PLN i czas naprawy.
+
+Historia rozmowy:
+${updated.map(m => (m.ai ? "AI: " : "Klient: ") + m.t).join("\n")}`
+
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: conversationPrompt }] }],
+            generationConfig: { temperature: 0.3 }
+          })
+        })
+
+        if (res.ok) {
+          const data = (await res.json()) as any
+          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text
+          if (reply) {
+            setMsgs(m => [...m, { ai: true, t: reply }])
+            setStage(s => s + 1)
+            setIsTyping(false)
+            return
+          }
+        }
+      } catch (e) {
+        console.warn("Live Gemini call failed:", e)
+      }
+    }
+
     setTimeout(() => {
       setMsgs(m => [...m, { ai: true, t: stage === 0 ? d.followupAiMsg : d.resultAiMsg }])
       setStage(s => s + 1)
+      setIsTyping(false)
     }, 600)
   }
 
@@ -132,6 +174,13 @@ function Diagnosis({ nav, userName }: { nav: Nav; userName: string }) {
         {msgs.map((m, i) => (
           <div key={i} className={`max-w-[min(85%,36rem)] px-5 break-words py-3.5 rounded-3xl text-[15px] leading-relaxed ${m.ai ? "glass" : "bg-[var(--bubble-user-bg)] text-[var(--bubble-user-text)] ml-auto shadow-sm"}`}>{m.t}</div>
         ))}
+        {isTyping && (
+          <div className="max-w-[min(85%,36rem)] px-5 py-3.5 rounded-3xl text-[15px] glass flex items-center gap-1.5 text-[var(--muted)]">
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce" />
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce [animation-delay:0.2s]" />
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce [animation-delay:0.4s]" />
+          </div>
+        )}
       </div>
       {stage >= 2 && (
         <Card tone="glass" className="space-y-4">

@@ -63,6 +63,13 @@ export default function GoogleMapView({ services, onSelectService, selectedId, c
     const isDark = document.documentElement.classList.contains("dark")
     let isMounted = true
 
+    const origAuthFailure = (window as unknown as { gm_authFailure?: () => void }).gm_authFailure
+    ;(window as unknown as { gm_authFailure?: () => void }).gm_authFailure = () => {
+      console.warn("Google Maps Auth/Billing failure detected")
+      if (isMounted) setLoadError("Wymagane włączenie płatności (Billing) w Google Cloud Console dla klucza Maps API.")
+      if (origAuthFailure) origAuthFailure()
+    }
+
     try {
       setOptions({
         key: apiKey,
@@ -98,6 +105,7 @@ export default function GoogleMapView({ services, onSelectService, selectedId, c
 
     return () => {
       isMounted = false
+      ;(window as unknown as { gm_authFailure?: () => void }).gm_authFailure = origAuthFailure
     }
   }, [apiKey])
 
