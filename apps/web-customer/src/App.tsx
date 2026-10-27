@@ -1,9 +1,10 @@
-import { useState, useEffect, type ReactNode } from "react"
+import { useState, useEffect, useRef, type ReactNode } from "react"
 import Onboarding, { type UserProfile } from "./Onboarding"
 import { Logo, Badge, Button, RotatingStamp, Card, Chip, Field, Icon, IconButton, Label, ListRow, Progress, SectionTitle, Segmented, Toggle } from "./design-system"
 import { SERVICES, type Service } from "./data/mock"
 import { I18nProvider, useI18n, type Language } from "./i18n"
 import GoogleMapView from "./components/GoogleMapView"
+import { askGeminiDiagnostic, type ChatMessage, type DiagnosticResult } from "./services/aiDiagnosis"
 
 /* ─── Routing: simple stack navigator ─── */
 type Tab = "diag" | "services" | "orders" | "knowledge" | "profile"
@@ -76,65 +77,59 @@ function Hero({ eyebrow, title, right }: { eyebrow: string; title: ReactNode; ri
 
 /* ─── 01 Diagnostyka ─── */
 function Diagnosis({ nav, userName }: { nav: Nav; userName: string }) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const d = t.diagnosis
-  const [msgs, setMsgs] = useState<{ ai: boolean; t: string }[]>([{ ai: true, t: d.initialAiMsg }])
+  const [msgs, setMsgs] = useState<ChatMessage[]>([{ ai: true, t: d.initialAiMsg }])
   const [input, setInput] = useState("")
   const [stage, setStage] = useState(0)
   const [isTyping, setIsTyping] = useState(false)
+  const [attachedImage, setAttachedImage] = useState<string | null>(null)
+  const [diagnosticResult, setDiagnosticResult] = useState<DiagnosticResult | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const send = async (text: string) => {
-    if (!text.trim() || isTyping) return
-    const userText = text.trim()
-    const updated = [...msgs, { ai: false, t: userText }]
-    setMsgs(updated)
-    setInput("")
-    setIsTyping(true)
-
-    const geminiKey = (import.meta.env.VITE_GEMINI_API_KEY as string | undefined)?.trim()
-    if (geminiKey) {
-      try {
-        const conversationPrompt = `Jesteś ekspertem diagnostyki urządzeń elektronicznych (smartfony, laptopy, konsole, tablety) w aplikacji Repair God.
-Rozmawiasz z klientem: ${userName || "Klient"}.
-Odpisz zwięźle (2-4 zdania), profesjonalnie i w języku, w którym pisze klient.
-Jeśli to pierwsza wiadomość, dopytaj o markę, model i objawy.
-Jeśli klient opisał problem (lub to kolejna wiadomość), podaj wstępną diagnozę przyczyny, rekomendowaną naprawę oraz orientacyjny koszt w PLN i czas naprawy.
-
-Historia rozmowy:
-${updated.map(m => (m.ai ? "AI: " : "Klient: ") + m.t).join("\n")}`
-
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiKey}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: conversationPrompt }] }],
-            generationConfig: { temperature: 0.3 }
-          })
-        })
-
-        if (res.ok) {
-          const data = (await res.json()) as any
-          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text
-          if (reply) {
-            setMsgs(m => [...m, { ai: true, t: reply }])
-            setStage(s => s + 1)
-            setIsTyping(false)
-            return
-          }
-        }
-      } catch (e) {
-        console.warn("Live Gemini call failed:", e)
-      }
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      setAttachedImage(reader.result as string)
     }
-
-    setTimeout(() => {
-      setMsgs(m => [...m, { ai: true, t: stage === 0 ? d.followupAiMsg : d.resultAiMsg }])
-      setStage(s => s + 1)
-      setIsTyping(false)
-    }, 600)
+    reader.readAsDataURL(file)
   }
 
-  const attach = () => send(`📎 ${d.photoAttached}`)
+  const send = async (text: string, directImage?: string) => {
+    const imgToSend = directImage || attachedImage
+    if ((!text.trim() && !imgToSend) || isTyping) return
+
+    const userText = text.trim() || (imgToSend ? "Załączono zdjęcie urządzenia" : "")
+    const newMsg: ChatMessage = {
+      ai: false,
+      t: userText,
+      image: imgToSend || undefined
+    }
+
+    const updated = [...msgs, newMsg]
+    setMsgs(updated)
+    setInput("")
+    setAttachedImage(null)
+    if (fileInputRef.current) fileInputRef.current.value = ""
+    setIsTyping(true)
+
+    try {
+      const { reply, result } = await askGeminiDiagnostic(updated, userName, lang)
+      setMsgs(m => [...m, { ai: true, t: reply }])
+      if (result) {
+        setDiagnosticResult(result)
+      }
+      setStage(s => s + 1)
+    } catch (e) {
+      console.warn("Diagnosis failed:", e)
+      setMsgs(m => [...m, { ai: true, t: stage === 0 ? d.followupAiMsg : d.resultAiMsg }])
+      setStage(s => s + 1)
+    } finally {
+      setIsTyping(false)
+    }
+  }
 
   const chips = [d.screenCrackedChip, d.notChargingChip, d.fastDrainChip, d.liquidDamageChip]
 
@@ -142,15 +137,61 @@ ${updated.map(m => (m.ai ? "AI: " : "Klient: ") + m.t).join("\n")}`
     <Screen
       footer={
         <div className="space-y-3">
+          {/* Hidden native file input for camera/gallery upload */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/*,video/*"
+            className="hidden"
+            onChange={handleFileSelect}
+          />
+
           {stage === 0 && (
             <div className="flex gap-2 overflow-x-auto no-scrollbar">
               {chips.map(c => <Chip key={c} onClick={() => send(c)}>{c}</Chip>)}
             </div>
           )}
+
+          {/* Attached image preview banner */}
+          {attachedImage && (
+            <div className="flex items-center gap-3 p-2 rounded-2xl glass-strong border border-white/20">
+              <img src={attachedImage} alt="Załącznik" className="w-14 h-14 rounded-xl object-cover shadow-sm" />
+              <div className="flex-1 text-xs">
+                <div className="font-bold text-[var(--ink)]">Zdjęcie dołączone</div>
+                <div className="text-[var(--muted)]">Gemini AI przeanalizuje usterkę ze zdjęcia</div>
+              </div>
+              <button
+                onClick={() => { setAttachedImage(null); if (fileInputRef.current) fileInputRef.current.value = "" }}
+                className="w-7 h-7 rounded-full bg-black/10 dark:bg-white/10 grid place-items-center text-sm font-bold cursor-pointer hover:bg-black/20"
+              >
+                ×
+              </button>
+            </div>
+          )}
+
           <div className="flex gap-2">
-            <IconButton label="Attach" onClick={attach}><Icon.clip /></IconButton>
-            <Field value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send(input)} placeholder={d.inputPlaceholder} className="h-11" />
-            <IconButton label={t.common.send} dark onClick={() => send(input)}><Icon.send /></IconButton>
+            <IconButton
+              label="Attach file/photo"
+              onClick={() => fileInputRef.current?.click()}
+              className={attachedImage ? "ring-2 ring-[var(--accent)]" : ""}
+            >
+              <Icon.clip />
+            </IconButton>
+            <Field
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && send(input)}
+              placeholder={attachedImage ? "Opisz zdjęcie lub kliknij Wyślij…" : d.inputPlaceholder}
+              className="h-11"
+            />
+            <IconButton
+              label={t.common.send}
+              dark
+              disabled={isTyping || (!input.trim() && !attachedImage)}
+              onClick={() => send(input)}
+            >
+              <Icon.send />
+            </IconButton>
           </div>
         </div>
       }
@@ -172,24 +213,36 @@ ${updated.map(m => (m.ai ? "AI: " : "Klient: ") + m.t).join("\n")}`
       </Card>
       <div className="space-y-3">
         {msgs.map((m, i) => (
-          <div key={i} className={`max-w-[min(85%,36rem)] px-5 break-words py-3.5 rounded-3xl text-[15px] leading-relaxed ${m.ai ? "glass" : "bg-[var(--bubble-user-bg)] text-[var(--bubble-user-text)] ml-auto shadow-sm"}`}>{m.t}</div>
+          <div key={i} className={`max-w-[min(85%,36rem)] px-5 break-words py-3.5 rounded-3xl text-[15px] leading-relaxed ${m.ai ? "glass" : "bg-[var(--bubble-user-bg)] text-[var(--bubble-user-text)] ml-auto shadow-sm"}`}>
+            {m.image && (
+              <img src={m.image} alt="Załączone zdjęcie" className="rounded-2xl max-h-56 w-auto object-cover mb-2 border border-white/10 shadow" />
+            )}
+            <div>{m.t}</div>
+          </div>
         ))}
         {isTyping && (
-          <div className="max-w-[min(85%,36rem)] px-5 py-3.5 rounded-3xl text-[15px] glass flex items-center gap-1.5 text-[var(--muted)]">
-            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce" />
-            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce [animation-delay:0.2s]" />
-            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce [animation-delay:0.4s]" />
+          <div className="max-w-[min(85%,36rem)] px-5 py-3.5 rounded-3xl text-[15px] glass flex items-center gap-2 text-[var(--muted)] screen-in">
+            <span className="text-xs font-semibold">Gemini AI analizuje…</span>
+            <div className="flex gap-1">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce" />
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce [animation-delay:0.2s]" />
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce [animation-delay:0.4s]" />
+            </div>
           </div>
         )}
       </div>
-      {stage >= 2 && (
-        <Card tone="glass" className="space-y-4">
-          <div className="flex items-center justify-between"><Label>{d.diagResultLabel}</Label><Badge tone="accent">{d.confidenceBadge}</Badge></div>
-          <div className="text-xl font-bold">{d.displayReplacement}</div>
+
+      {(diagnosticResult || stage >= 2) && (
+        <Card tone="glass" className="space-y-4 screen-in">
+          <div className="flex items-center justify-between">
+            <Label>{d.diagResultLabel}</Label>
+            <Badge tone="accent">{diagnosticResult?.confidence || d.confidenceBadge}</Badge>
+          </div>
+          <div className="text-xl font-bold">{diagnosticResult?.title || d.displayReplacement}</div>
           <div className="grid grid-cols-3 gap-3 md:gap-6 num-grid">
-            <div><Label>{t.tabs.services}</Label><div className="font-bold text-lg">{d.servicesCount}</div></div>
-            <div><Label>{t.common.from}</Label><div className="font-bold text-lg">{d.priceFrom}</div></div>
-            <div><Label>{d.timeEst}</Label><div className="font-bold text-lg">1–3 {t.common.days}</div></div>
+            <div><Label>{t.tabs.services}</Label><div className="font-bold text-lg">{diagnosticResult?.servicesCount || d.servicesCount}</div></div>
+            <div><Label>{t.common.from}</Label><div className="font-bold text-lg">{diagnosticResult?.priceFrom || d.priceFrom}</div></div>
+            <div><Label>{d.timeEst}</Label><div className="font-bold text-lg">{diagnosticResult?.days || `1–3 ${t.common.days}`}</div></div>
           </div>
           <Button className="w-full" onClick={() => nav.tab("services")} icon={<Icon.send />}>{d.selectServiceBtn}</Button>
         </Card>

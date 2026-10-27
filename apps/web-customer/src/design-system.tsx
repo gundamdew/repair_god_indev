@@ -42,9 +42,9 @@ export function Button({ variant = "primary", icon, className = "", children, ..
   )
 }
 
-export function IconButton({ label, children, onClick, dark }: { label: string; children: ReactNode; onClick?: () => void; dark?: boolean }) {
+export function IconButton({ label, children, onClick, dark, className = "", disabled }: { label: string; children: ReactNode; onClick?: () => void; dark?: boolean; className?: string; disabled?: boolean }) {
   return (
-    <button aria-label={label} onClick={onClick} className={`w-11 h-11 rounded-full grid place-items-center shrink-0 cursor-pointer active:scale-95 transition ${dark ? "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] shadow-sm" : "glass-strong text-[var(--ink)]"}`}>
+    <button aria-label={label} onClick={onClick} disabled={disabled} className={`w-11 h-11 rounded-full grid place-items-center shrink-0 cursor-pointer active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed ${dark ? "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] shadow-sm" : "glass-strong text-[var(--ink)]"} ${className}`}>
       {children}
     </button>
   )
