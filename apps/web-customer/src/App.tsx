@@ -3,6 +3,7 @@ import Onboarding, { type UserProfile } from "./Onboarding"
 import { Logo, Badge, Button, RotatingStamp, Card, Chip, Field, Icon, IconButton, Label, ListRow, Progress, SectionTitle, Segmented, Toggle } from "./design-system"
 import { SERVICES, type Service } from "./data/mock"
 import { I18nProvider, useI18n, type Language } from "./i18n"
+import GoogleMapView from "./components/GoogleMapView"
 
 /* ─── Routing: simple stack navigator ─── */
 type Tab = "diag" | "services" | "orders" | "knowledge" | "profile"
@@ -159,13 +160,10 @@ function ServicesScreen({ nav }: { nav: Nav }) {
   const list = SERVICES.filter(s => (s.name + s.spec).toLowerCase().includes(q.toLowerCase())).sort((a, b) => (b.promoted ? 1 : 0) - (a.promoted ? 1 : 0) || (sort === "rating" ? b.rating - a.rating : a[sort] - b[sort]))
 
   const map = (
-    <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:h-full rounded-[28px] overflow-hidden grad-sage">
-      <svg className="absolute inset-0 w-full h-full opacity-40" preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden><path d="M0 60 Q30 50 50 62 T100 55" stroke="#fff" strokeWidth="3" fill="none" /><path d="M40 0 L45 100M0 30 L100 25" stroke="#fff" strokeWidth="1.5" fill="none" /></svg>
-      <div className="absolute left-1/2 top-1/2 w-4 h-4 rounded-full bg-[var(--accent)] ring-8 ring-[var(--accent)]/15" />
-      {list.map(s => (
-        <button key={s.id} onClick={() => nav.push({ name: "service", id: s.id })} style={{ left: `${s.x}%`, top: `${s.y}%` }} className="absolute -translate-x-1/2 -translate-y-1/2 glass-strong rounded-full h-9 px-3.5 text-sm font-bold cursor-pointer num">{s.price} zł</button>
-      ))}
-    </div>
+    <GoogleMapView
+      services={list}
+      onSelectService={id => nav.push({ name: "service", id })}
+    />
   )
 
   return (
